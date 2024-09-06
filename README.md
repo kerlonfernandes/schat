@@ -1,4 +1,4 @@
 # schat
 
-a chat made in 5 minutes to amuse my friends
+a chat made in 13 minutes to amuse my friends 
 
