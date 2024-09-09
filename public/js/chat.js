@@ -1,3 +1,10 @@
+
+
+export function processCommands() {
+    
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     let input = document.querySelector("#message");
     
@@ -14,3 +21,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+

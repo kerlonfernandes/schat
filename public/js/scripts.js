@@ -1,3 +1,5 @@
+import { processCommands } from "./chat.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     
     const onlineUsersDiv = document.querySelector(".online-users");
@@ -66,12 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let author = userData.name;
         let message = document.querySelector("#message").value.trim();
         let profilePic = userData.profilePic;
-
-        if(message === "/change-name") {
-            userData.name = window.prompt("Coloca seu nome aí po");
-        
-            localStorage.setItem('user', JSON.stringify(userData));
-        }
 
         if (author.length && message.length) {
             let messageObj = {
