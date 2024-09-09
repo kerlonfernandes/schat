@@ -1,7 +1,7 @@
 {
   "name": "mychat",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,10 @@
   "keywords": [],
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "mysql2": "^3.11.0",
     "socket.io": "^4.7.5"
   }
 }

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let name = window.prompt("Coloca seu nome aí po")
     // https://2a96-2804-3e60-4b4-5700-12b9-6d9d-b8aa-2e4b.ngrok-free.app
-    let socket = io('');
+    let socket = io('https://2a96-2804-3e60-4b4-5700-12b9-6d9d-b8aa-2e4b.ngrok-free.app');
    
     socket.on('connect', () => {
         console.log('Connected to server');

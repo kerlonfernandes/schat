@@ -1,10 +1,8 @@
 const express = require('express');
-const path = require('path'); // Importa o módulo 'path'
 const router = express.Router();
+const indexController = require('../controllers/indexController');
 
-// Define routes here
-router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../public/views/index.html'));
-});
+// Define routes
+router.get('/', indexController.getIndex);
 
 module.exports = router;
