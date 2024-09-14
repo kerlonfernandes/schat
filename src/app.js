@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
+
 const indexRouter = require('./routes/index'); 
 const userRouter = require('./routes/user'); 
+const roomsRouter = require('./routes/rooms'); 
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/', indexRouter);
-app.use('/', userRouter); 
+app.use('/', userRouter);
+app.use('/', roomsRouter);
+
 
 require('./socket/socketEvents')(io);
 

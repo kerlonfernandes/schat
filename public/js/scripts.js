@@ -9,11 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!userData.name) {
         userData.name = window.prompt("Coloca seu nome aí po");
-        userData.profilePic = window.prompt("Quer colocar uma imagem de perfil? (a imagem deve estar hospedada)");
+        userData.profilePic = window.prompt("Quer colocar uma imagem de perfil? caso não queira, apenas deixe o campo vazio. (a imagem deve estar hospedada)");
         
         localStorage.setItem('user', JSON.stringify(userData));
     }
-
 
     const quitBtn = document.querySelector(".quit");
 
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    let socket = io('https://0007-2804-3e60-4cf-3800-9a3c-576c-833b-a4c5.ngrok-free.app');
+    let socket = io('http://localhost:3000');
     
     const messagesDiv = document.querySelector('.messages');
 
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="username ms-3">${data.author}</div>
                 </div>
                 <hr>
-                <div class="card-body">
+                <div class="card-body"> 
                     <p>${data.message.slice(0, 300)}</p>
                 </div>
             </div>
@@ -68,12 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let author = userData.name;
         let message = document.querySelector("#message").value.trim();
         let profilePic = userData.profilePic;
+        const currentTimestamp = Date.now();
 
         if (author.length && message.length) {
             let messageObj = {
                 author: author,
                 profilePic: profilePic,
-                message: message
+                message: message,
+                timestamp: currentTimestamp
             };
             socket.emit('sendMessage', messageObj);
             document.querySelector("#message").value = "";

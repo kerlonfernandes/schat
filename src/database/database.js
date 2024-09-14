@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-const config = require('../config/config'); 
+const config = require('../config/config');
 const mysql_config = config.mysql_config;
 
 class Database {
@@ -11,7 +11,8 @@ class Database {
     // Método para conectar ao banco de dados
     async connect() {
         if (this.connection) {
-            throw new Error('Já está conectado ao banco de dados.');
+            console.log('Já está conectado ao banco de dados.');
+            return;
         }
         try {
             this.connection = await mysql.createConnection(this.config);
@@ -22,10 +23,10 @@ class Database {
         }
     }
 
-    // Método para desconectar do banco de dados
     async disconnect() {
         if (!this.connection) {
-            throw new Error('Não há conexão com o banco de dados.');
+            console.log('Nenhuma conexão com o banco de dados para fechar.');
+            return;
         }
         try {
             await this.connection.end();
@@ -44,14 +45,13 @@ class Database {
         }
 
         try {
-            const [results, fields] = await this.connection.execute(query, params);
-            const response = {
+            const [results] = await this.connection.execute(query, params);
+            return {
                 status: 'success',
                 affected_rows: this.getAffectedRows(query, results),
                 query,
                 results
             };
-            return response;
         } catch (err) {
             console.error('Erro ao executar a consulta:', err);
             return {
@@ -73,12 +73,20 @@ class Database {
 
     // Método para executar uma consulta de leitura (SELECT)
     async select(query, params = []) {
-        return await this.executeQuery(query, params);
+        const result = await this.executeQuery(query, params);
+        if (result.status === 'success') {
+            return result.results;
+        }
+        throw new Error('Erro ao executar consulta SELECT.');
     }
 
     // Método para executar uma consulta de escrita (INSERT, UPDATE, DELETE)
     async modify(query, params = []) {
-        return await this.executeQuery(query, params);
+        const result = await this.executeQuery(query, params);
+        if (result.status === 'success') {
+            return result.affected_rows;
+        }
+        throw new Error('Erro ao executar consulta de modificação.');
     }
 }
 
