@@ -1,6 +1,8 @@
 const path = require('path');
 
 exports.getIndex = (req, res) => {
+    
+    const id = req.params.id;
 
-    res.sendFile(path.join(__dirname, '../../public/views/index.html'));
+    res.sendFile(path.join(__dirname, '../../public/views/chat.html'));
 };

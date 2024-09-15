@@ -4,7 +4,7 @@ const saltRounds = 10;
 
 class UserModel extends Database {
     constructor() {
-        super(); // Chama o construtor da classe base Database
+        super(); 
     }
 
     async createUser(username, email, password) {

@@ -1,24 +1,20 @@
 const crypto = require('crypto');
 const config = require('../config/config');
 
-const iv = crypto.randomBytes(16); 
+const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
+    modulusLength: 2048, // Tamanho da chave
+    publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
+    privateKeyEncoding: { type: 'pkcs1', format: 'pem' }
+});
 
-const secretKey = config.secretKey; 
-
-function encrypt(id) {
-    const cipher = crypto.createCipheriv('aes-256-cbc', secretKey, iv);
-    let encrypted = cipher.update(id.toString(), 'utf-8', 'hex');
-    encrypted += cipher.final('hex');
-    return `${iv.toString('hex')}:${encrypted}`;
+function encrypt(text) {
+    return crypto.publicEncrypt(publicKey, Buffer.from(text)).toString('base64');
 }
 
-function decrypt(encryptedId) {
-    const [ivHex, encrypted] = encryptedId.split(':');
-    const decipher = crypto.createDecipheriv('aes-256-cbc', secretKey, Buffer.from(ivHex, 'hex'));
-    let decrypted = decipher.update(encrypted, 'hex', 'utf-8');
-    decrypted += decipher.final('utf-8');
-    return decrypted;
+function decrypt(encryptedText) {
+    return crypto.privateDecrypt(privateKey, Buffer.from(encryptedText, 'base64')).toString('utf8');
 }
+
 
 module.exports =  {
     decrypt,

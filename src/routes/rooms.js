@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/roomController');
+const roomController = require('../controllers/roomController');
 
-router.get('/rooms', userController.fetchRooms);
+router.get('/rooms', roomController.getRoomsPage);
+router.get('/fetch/rooms', roomController.fetchRooms);
+router.get('/api/getMessages', roomController.getMessages)
 
 module.exports = router;

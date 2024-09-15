@@ -1,13 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SChat | Rooms</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/pages.css">
 </head>
-<body>
-    
-    salas
-    
+
+<body class="main-content">
+    <h6>Active users <span class="badge text-bg-success online-users">0</span></h6>
+
+    <div class="container">
+        <h1>Chats</h1>
+        <div class="chat-list">
+
+            <div class="overlay">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            <div class="chat-item">
+
+                <div class="spinner-wrapper">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="/js/assets/socket.io.js"></script>
+    <script type="module" src="/js/index.js"></script>
+    <script type="module" src="/js/styles/effects.js"></script>
+    <script type="module" src="/js/pages/rooms.js"></script>
 </body>
+
 </html>
