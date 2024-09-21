@@ -33,18 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
     socket = io('http://localhost:3000');
 
     socket.on('connect', () => {
-        // Emitir o roomId ao se conectar
+
+        // emitir o roomId ao se conectar
         socket.emit('joinRoom', roomId, userData);
 
         socket.on('updateOnlineUsers', (data) => {
             onlineUsersDiv.innerHTML = `<p><strong>Online Users:</strong> ${data.count}</p>`;
-            
+
         });
-        
+
         socket.on('totalUserCount', (totalCount) => {
             totalUsersDiv.textContent = `Total Users Online: ${totalCount}`;
         });
-        
+
         socket.on('user_exit', (message) => {
             messagesDiv.innerHTML += `<p><strong>${message}</strong></p>`;
             scrollToBottom();
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         quitBtn.addEventListener('click', () => {
             if (socket) {
-                socket.emit('leaveRoom', roomId); // Informar ao servidor que está saindo da sala
+                socket.emit('leaveRoom', roomId); // informar ao servidor que está saindo da sala
             }
             localStorage.clear();
             window.location.href = "./";

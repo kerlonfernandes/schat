@@ -1,3 +1,3 @@
-const socket = io('https://f7ef-189-91-144-33.ngrok-free.app');
+const socket = io('http://localhost:3000');
 
 export default socket;

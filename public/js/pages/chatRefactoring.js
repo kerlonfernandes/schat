@@ -77,11 +77,15 @@ class ChatPage {
             this.messagesDiv.innerHTML += `
                 <div class="card message-card m-4">
                     <div class="card-body d-flex align-items-center">
-                        ${data.profilePic ? `<img src="${data.profilePic}" alt="Profile Picture" class="profile-pic" height="100" width="100" style="border-radius:50%;">` : ''}
+                        ${data.profilePic ? `<img src="${data.profilePic}" alt="Profile Picture"
+                             class="profile-pic" height="100" width="100"
+                                style="border-radius:50%;">` : ''
+
+                }
                         <div class="username ms-3">${data.author}</div>
                     </div>
                     <hr>
-                    <div class="card-body"> 
+                    <div class="card-body">
                         <p>${data.message.slice(0, 300)}</p>
                     </div>
                 </div>
@@ -101,12 +105,15 @@ class ChatPage {
     }
 
     sendMessage() {
+
         this.chatForm.addEventListener('submit', (e) => {
+
             e.preventDefault();
 
             let author = this.userData.name;
             let message = this.messageInput.value.trim();
             let profilePic = this.userData.profilePic;
+
             const currentTimestamp = Date.now();
 
             if (author.length && message.length) {
@@ -137,49 +144,55 @@ class ChatPage {
     async loadMessages() {
         if (this.isLoading) return;
         this.isLoading = true;
-    
+
         try {
-            this.offset += 10; 
-    
-            let response = await fetch(`/api/getMessages?roomId=${this.roomId}&limit=10&offset=${this.offset}`);
-            let data = await response.json();
-    
-            console.log('Messages Data:', data);
-    
-            if (data && data.messages.length) {
-                let newMessages = data.messages.filter(msg => !this.existingMessages.has(msg.id));
-    
-                if (newMessages.length) {
-                    let messagesHtml = newMessages.map(msg => {
-                        this.existingMessages.add(msg.id); 
-                        return `
-                            <div class="card message-card m-4">
-                                <div class="card-body d-flex align-items-center">
-                                    ${msg.profilePic ? `<img src="${msg.profilePic}" alt="Profile Picture" class="profile-pic" height="100" width="100" style="border-radius:50%;">` : ''}
-                                    <div class="username ms-3">${msg.author}</div>
+            this.offset += 10;
+
+            socket.emit('getMessages', { roomId: this.roomId, limit: 10, offset: this.offset }, (data) => {
+                if (data && data.status === "success" && data.messages.length) {
+                    let newMessages = data.messages.filter(msg => !this.existingMessages.has(msg.id));
+
+                    if (newMessages.length) {
+                        let messagesHtml = newMessages.map(msg => {
+                            this.existingMessages.add(msg.id);
+                            return `
+                                <div class="card message-card m-4">
+                                    <div class="card-body d-flex align-items-center">
+                                        ${msg.profilePic ? `<img src="${msg.profilePic}" 
+                                            alt="Profile Picture" class="profile-pic" height="100" width="100" style="border-radius:50%;">` : ''}
+                                        <div class="username ms-3">${msg.author}</div>
+                                    </div>
+                                    <hr>
+                                    <div class="card-body"> 
+                                        <p>${msg.message.slice(0, 300)}</p>
+                                    </div>
                                 </div>
-                                <hr>
-                                <div class="card-body"> 
-                                    <p>${msg.message.slice(0, 300)}</p>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-    
-                    const currentScrollTop = this.messagesDiv.scrollTop;
-    
-                    this.messagesDiv.innerHTML = messagesHtml + this.messagesDiv.innerHTML;
-    
-                    this.messagesDiv.scrollTop = this.messagesDiv.scrollHeight - currentScrollTop - this.messagesDiv.clientHeight;
+                            `;
+                        }).join('');
+
+                        const currentScrollTop = this.messagesDiv.scrollTop;
+
+                        this.messagesDiv.innerHTML = messagesHtml + this.messagesDiv.innerHTML;
+
+                        // Ajuste da rolagem com comportamento suave
+                        this.messagesDiv.scrollTo({
+                            top: this.messagesDiv.scrollHeight - currentScrollTop - this.messagesDiv.clientHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+                } else {
+                    console.log(data.message || 'Nenhuma mensagem encontrada.');
                 }
-            }
+            });
         } catch (error) {
             console.error('Erro ao carregar mensagens:', error);
         } finally {
-            this.isLoading = false; 
+            this.isLoading = false;
         }
     }
-    
+
+
+
 
     beforeUnload() {
         window.addEventListener('beforeunload', () => {

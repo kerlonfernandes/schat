@@ -8,13 +8,12 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
 });
 
 function encrypt(text) {
-    return crypto.publicEncrypt(publicKey, Buffer.from(text)).toString('base64');
+    return text;
 }
 
 function decrypt(encryptedText) {
-    return crypto.privateDecrypt(privateKey, Buffer.from(encryptedText, 'base64')).toString('utf8');
+    return encryptedText;
 }
-
 
 module.exports =  {
     decrypt,

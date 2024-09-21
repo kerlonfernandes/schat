@@ -1,6 +1,6 @@
 const path = require('path');
-const RoomModel = require('../models/roomModel'); 
-const Intern = require('../utils/intern'); 
+const RoomModel = require('../models/roomModel');
+const Intern = require('../utils/intern');
 
 exports.getRoomsPage = (req, res) => {
 
@@ -33,26 +33,24 @@ exports.fetchRooms = async (req, res) => {
             }));
 
             return res.json(response);
-            
+
         }
-       
+
         response.message = "Nenhum resultado encontrado";
 
         return res.json(response);
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send('Erro interno do servidor');
     }
 
-
 }
-
 
 exports.getMessages = async (req, res) => {
     const { roomId } = req.query;
-    const limit = parseInt(req.query.limit, 10) || 10; 
-    const offset = parseInt(req.query.offset, 10) || 0; 
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const offset = parseInt(req.query.offset, 10) || 0;
 
     if (!roomId) {
         return res.status(400).json({ status: "error", message: "roomId é necessário" });
@@ -66,7 +64,7 @@ exports.getMessages = async (req, res) => {
         let response = {
             status: "success",
             messages: messagesData.map(message => ({
-                id: message.id, // Inclua o ID único aqui
+                id: Intern.encrypt(message.id),
                 message: message.message,
                 sent_on: message.sent_on,
                 author: message.user_name,
@@ -80,7 +78,7 @@ exports.getMessages = async (req, res) => {
 
         response.message = "Nenhuma mensagem encontrada";
         return res.json(response);
-        
+
     } catch (err) {
         console.log(err);
         res.status(500).send('Erro interno do servidor');
