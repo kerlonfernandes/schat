@@ -1,0 +1,34 @@
+.card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    margin-right: 16px;
+}
+
+.username {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+hr {
+    margin: 0;
+}
+
+.card-body p {
+    margin: 0;
+    color: #666;
+}
