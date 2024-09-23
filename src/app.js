@@ -7,9 +7,11 @@ const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user'); 
 const roomsRouter = require('./routes/rooms'); 
 
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json()); 
