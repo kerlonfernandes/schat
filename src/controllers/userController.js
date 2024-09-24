@@ -1,5 +1,5 @@
 const path = require('path');
-const UserModel = require('../models/userModel'); // Certifique-se de que o caminho está correto
+const UserModel = require('../models/userModel'); 
 
 exports.getLogin = (req, res) => {
     UserModel.getUserById(1, (err, user) => {
